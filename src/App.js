@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.module.scss';
 import Car from './Car/Car';
+import ErrorBoundary from './ErrorBoundary/ErrorBounday';
+import Counter from './counter/counter';
 
 class App extends Component {
 
@@ -9,8 +11,8 @@ class App extends Component {
     this.state = {
       cars: [
         {name:'Ford', year: 2018},
-        //{name:'Mers', year: 2020},
-        //{name:'Mazda 3', year: 2010},
+        // {name:'Mers', year: 2020},
+        // {name:'Mazda 3', year: 2010},
       ],
       pageTitle: 'React components',
       showCars: false
@@ -70,14 +72,15 @@ class App extends Component {
     if (this.state.showCars) {
       cars = this.state.cars.map((car, index) => {
         return (
-          <Car
-          key={index}
-          name={car.name}
-          year={car.year}
-          onChangeTitle={() => this.changeTitleHandler(car.name)}
-          onChangeName={ event => this.onChangeName(event.target.value, index)}
-          onDelete={this.deleteHandler.bind(this, index)}
-          />
+          <ErrorBoundary key={index}>
+            <Car
+              name={car.name}
+              year={car.year}
+              onChangeTitle={() => this.changeTitleHandler(car.name)}
+              onChangeName={ event => this.onChangeName(event.target.value, index)}
+              onDelete={this.deleteHandler.bind(this, index)}
+            />
+          </ErrorBoundary>
         )
       })
     }
@@ -87,7 +90,12 @@ class App extends Component {
           <h2 style={{color: 'blue', fontSize: '60px'}}>{this.state.pageTitle}</h2>
           <h3 style={{color: 'blue', fontSize: '60px'}}>{this.props.title}</h3>
           {/* <input type="text" onChange={this.handleInpit}/> */}
-          <button onClick={this.toogleCarsHandler}>Toogle cars</button>
+
+          <Counter />
+          <button
+            style={{marginTop: 20}}
+            className={'AppButton'}
+            onClick={this.toogleCarsHandler}>Toogle cars</button>
         </div>
 
       <div style={{
